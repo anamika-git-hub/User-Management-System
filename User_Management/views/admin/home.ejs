@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | User Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e71;
+            --secondary-color: #2e59d9;
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 240px;
+            background: linear-gradient(180deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        .sidebar-brand {
+            padding: 1.5rem 1rem;
+            text-align: center;
+            font-size: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .sidebar .nav-item {
+            padding: 0.5rem 1rem;
+        }
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .sidebar-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 1rem 0;
+        }
+        .content {
+            margin-left: 240px;
+            padding: 20px;
+        }
+        .topbar {
+            height: 70px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid #edf2f9;
+            padding: 1rem 1.25rem;
+            font-weight: 500;
+        }
+        .stat-card {
+            border-left: 5px solid;
+        }
+        .stat-card.primary {
+            border-left-color: var(--primary-color);
+        }
+        .stat-card.success {
+            border-left-color: #1cc88a;
+        }
+        .stat-card.warning {
+            border-left-color: #f6c23e;
+        }
+        .stat-card.danger {
+            border-left-color: #e74a3b;
+        }
+        .stat-icon {
+            font-size: 2rem;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <i class="fas fa-user-shield"></i>
+            <span>Admin Panel</span>
+        </div>
+        
+        <hr class="sidebar-divider">
+        
+        <div class="nav flex-column">
+            <div class="nav-item">
+                <a class="nav-link active" href="/admin/home">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            
+            <hr class="sidebar-divider">
+            
+            <div class="nav-item">
+                <a class="nav-link" href="/admin/dashboard">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Users Management</span>
+                </a>
+            </div>
+            
+            <div class="nav-item">
+                <a class="nav-link" href="/admin/new-user">
+                    <i class="fas fa-fw fa-user-plus"></i>
+                    <span>Add New User</span>
+                </a>
+            </div>
+            
+            <hr class="sidebar-divider">
+            
+            <div class="nav-item">
+                <a class="nav-link" href="/admin/logout">
+                    <i class="fas fa-fw fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="topbar mb-4">
+            <h4 class="text-dark">Welcome, <%= admin.name %></h4>
+            <div>
+                <a href="/admin/logout" class="btn btn-outline-secondary">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stat-card primary h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Total Users</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><%= stats.totalUsers %></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-users fa-2x text-gray-300 stat-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- You can add more stat cards here in the future -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stat-card success h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Active Users</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><%= stats.totalUsers %></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-user-check fa-2x text-gray-300 stat-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-8 col-lg-7">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">System Overview</h6>
+                        </div>
+                        <div class="card-body">
+                            <p>Welcome to the User Management System admin panel. This dashboard provides an overview of your system.</p>
+                            <p>Use the navigation menu on the left to:</p>
+                            <ul>
+                                <li>View and manage users</li>
+                                <li>Add new users to the system</li>
+                                <li>Edit existing user details</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 col-lg-5">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+                        </div>
+                        <div class="card-body">
+                            <a href="/admin/new-user" class="btn btn-primary btn-block mb-3">
+                                <i class="fas fa-user-plus mr-2"></i> Add New User
+                            </a>
+                            <a href="/admin/dashboard" class="btn btn-info btn-block">
+                                <i class="fas fa-users mr-2"></i> Manage Users
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
