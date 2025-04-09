@@ -32,6 +32,11 @@ const insertUser = async (req, res) => {
       return res.render('register', { message: 'All fields are required' });
     }
 
+    const phoneRegex = /^[6-9]\d{9}$/;
+    if (!phoneRegex.test(mobile)) {
+      return res.render('register', { message: 'Invalid mobile number. Must be 10 digits and start with 6-9.' });
+    }
+
     // Check if email already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
